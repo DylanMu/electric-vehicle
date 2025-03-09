@@ -35,22 +35,22 @@ This analysis explores electric vehicle (EV) title and registration data in Wash
 ## Visualizations
 Below are six of the most important visualizations generated during the analysis:
 
-![Visualization 1](png\viz1.png)
+![Visualization 1](png/viz1.png)
 - Most common EV makes/models
 
-![Visualization 2](png\viz2.png)
+![Visualization 2](png/viz2.png)
 - Registration trends over time
 
-![Visualization 3](png\viz3.png)
+![Visualization 3](png/viz3.png)
 - EV range requirement compliance by manufacturer
 
-![Visualization 4](png\viz4.png)
+![Visualization 4](png/viz4.png)
 - Average odometer readings by vehicle type
 
-![Visualization 5](png\viz5.png)
+![Visualization 5](png/viz5.png)
 - Sale price distribution for new vs. used EVs
 
-![Visualization 5](png\viz6.png)
+![Visualization 5](png/viz6.png)
 - EV distribution by county
 
 
