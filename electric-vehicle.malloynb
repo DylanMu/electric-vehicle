@@ -1,0 +1,229 @@
+>>>markdown
+## Electric Vehicles in Washington State
+Below are six of the most important visualizations generated during the analysis:
+
+![Visualization 1](png\viz1.png)
+- Most common EV makes/models
+
+![Visualization 2](png\viz2.png)
+- Registration trends over time
+
+![Visualization 3](png\viz3.png)
+- EV range requirement compliance by manufacturer
+
+![Visualization 4](png\viz4.png)
+- Average odometer readings by vehicle type
+
+![Visualization 5](png\viz5.png)
+- Sale price distribution for new vs. used EVs
+
+![Visualization 5](png\viz6.png)
+- EV distribution by county
+>>>malloy
+import "electric-vehicle.malloy"
+>>>markdown
+## **Vehicle Trends & Insights**
+>>>markdown
+_What are the most common Electric Vehicle (EV) makes and models in Washington?_
+>>>malloy
+run: data -> {
+    group_by: Make
+    aggregate: `Num of EVs` is count()
+    nest: `Model` is {
+        group_by: Model
+        aggregate: `Num of EVs` is count()
+        limit: 3
+    }
+    order_by: `Num of EVs` desc
+    limit: 10
+}
+>>>markdown
+_How has the number of EV registrations changed over time?_
+>>>malloy
+# line_chart
+run: data -> {
+    group_by: `Transaction Date` is trans_date
+    aggregate: Registrations is count()
+    order_by: `Transaction Date`
+}
+>>>markdown
+_What is the average electric range of EVs by make and model?_
+>>>malloy
+# bar_chart
+run: data -> {
+    group_by: Make, Model
+    aggregate: `Avg EV Range` is avg(range)
+    limit: 10
+}
+>>>markdown
+_How does EV odometer readings vary across vehicle models?_
+>>>malloy
+# line_chart
+run: data -> {
+    group_by: Model
+    aggregate: `Avg Milage` is avg(odometer)
+    order_by: `Avg Milage` desc
+}
+>>>markdown
+_What is the distribution of EV model years in the dataset?_
+>>>malloy
+# bar_chart
+run: data -> {
+    group_by: `Model Year` is model_year
+    aggregate: `Num of EVs` is count()
+    order_by: `Model Year` desc
+    limit: 10
+}
+>>>markdown
+## **Financial Analysis**
+>>>markdown
+_What is the average sale price of EVs by vehicle type?_
+>>>malloy
+run: data -> {
+    group_by: `Vehicle Type` is vehicle_type
+    aggregate: `Avg Sale Price` is avg(sale_price)
+    order_by: `Avg Sale Price` desc
+}
+>>>markdown
+_How does the Base MSRP compare across different EV makes?_
+>>>malloy
+# bar_chart
+run: data -> {
+    group_by: Make
+    aggregate: `Avg MSRP` is avg(msrp)
+    order_by: `Avg MSRP` desc
+    limit: 10
+}
+>>>markdown
+_What is the relationship between Electric Range and Sale Price?_
+>>>malloy
+# scatter_chart
+run: data -> {
+    group_by: `EV Range` is range
+    aggregate: `Avg Sale Price` is avg(sale_price)
+    order_by: `EV Range`
+    limit: 1000
+    where: range is not null
+}
+>>>markdown
+_How do new vs used EVs compare in terms of sale price?_
+>>>malloy
+run: data -> {
+    group_by: `Condition` is new_used
+    aggregate: `Avg Sale Price` is avg(sale_price)
+    order_by: `Avg Sale Price` desc
+}
+>>>markdown
+_How does EV pricing differ across different Washington counties?_
+>>>malloy
+# bar_chart
+run: data -> {
+    group_by: County
+    aggregate: `Avg Sale Price` is avg(sale_price)
+    order_by: `Avg Sale Price` desc
+}
+>>>markdown
+## **Regional Insights**
+>>>markdown
+_What are the top counties and cities for EV registrations?_
+>>>malloy
+# line_chart
+run: data -> {
+    group_by: County
+    aggregate: `Num of EVs` is count()
+    order_by: `Num of EVs` desc
+}
+>>>markdown
+_Which legislative districts have the highest number of EVs?_
+>>>malloy
+# bar_chart
+run: data -> {
+    group_by: `Legislative District` is district
+    aggregate: `Num of EVs` is count()
+    order_by: `Legislative District`
+}
+>>>markdown
+_How does the Electric Utility provider distribution look across EV registrations?_
+>>>malloy
+run: data -> {
+    group_by: `Utility Provider` is utility
+    aggregate: `Num of EVs` is count()
+    order_by: `Num of EVs` desc
+}
+>>>markdown
+_What are the most common postal codes for EV ownership?_
+>>>malloy
+# bar_chart
+run: data -> {
+    group_by: `Zip Code` is zip_code
+    aggregate: `Num of EVs` is count()
+    order_by: `Num of EVs` desc
+    limit: 10
+}
+>>>markdown
+_How does EV adoption differ across urban vs rural areas?_
+>>>malloy
+# bar_chart
+run: data -> {
+    group_by: County
+    aggregate: `Num of EVs` is count()
+    order_by: `Num of EVs` desc
+    limit: 10
+}
+>>>markdown
+## **Policy & Incentives**
+>>>markdown
+_How many EVs qualify for Clean Alternative Fuel Vehicle (CAFV) eligibility?_
+>>>malloy
+run: data -> {
+    group_by: CAFV_Eligible is cafv_eligibility = "Clean Alternative Fuel Vehicle"
+    aggregate: `Num of EVs` is count()
+}
+>>>markdown
+_How does battery range eligibility compare across different EV makes?_
+>>>malloy
+run: data -> {
+    group_by: `EV Range Requirement Met?` is range_requirement = "Battery range requirement is met"
+    aggregate: `Num of EVs` is count()
+    nest: `By Make` is {
+        group_by: Make
+        aggregate: `Num of EVs` is count()
+        limit: 4
+    }
+    order_by: `Num of EVs` desc
+}
+>>>markdown
+_How does the EV Fee Payment status vary?_
+>>>malloy
+# bar_chart
+run: data -> {
+    group_by: `Vehicle Fee Paid?` is vehicle_fee_paid
+    aggregate: `Num of Registrations` is count()
+}
+>>>markdown
+_What is the relationship between transaction type and sale price?_
+>>>malloy
+# bar_chart
+run: data -> {
+    group_by: `Type of Transaction` is trans_type
+    aggregate: `Avg Sale Price` is avg(sale_price)
+    order_by: `Avg Sale Price` desc
+    where:
+    trans_type != "Temporary Registration",
+    trans_type != "Registration at time of Transfer",
+    trans_type != "Registration Renewal",
+    trans_type != "Original Registration",
+    trans_type != "Registration Replacement"
+}
+>>>markdown
+_What percentage of EVs were registered as new vs used?_
+>>>malloy
+run: data -> {
+    group_by: `Condition` is new_used
+    aggregate: `Num of EVs` is count()
+    nest: `By Make` is {
+        group_by: Make
+        aggregate: `Num of EVs` is count()
+        limit: 4
+    }
+}

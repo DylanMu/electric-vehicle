@@ -1,0 +1,31 @@
+source: data is duckdb.table('data.parquet') extend {
+rename:
+msrp is `Base MSRP`
+vehicle_type is `Clean Alternative Fuel Vehicle Type`
+cafv_eligibility is `2019 HB 2042: Clean Alternative Fuel Vehicle (CAFV) Eligibility`
+range_requirement is `2019 HB 2042: Battery Range Requirement`
+purchase_date_requirement is `2019 HB 2042: Purchase Date Requirement`
+sale_price_requirement is `2019 HB 2042: Sale Price/Value Requirement`
+geoid is `2020 GEOID`
+dol_id is `DOL Vehicle ID`
+range is `Electric Range`
+utility is `Electric Utility`
+vehicle_fee_paid is `Electric Vehicle Fee Paid`
+hybrid_fee_paid is `Hybrid Vehicle Electrification Fee Paid`
+district is `Legislative District`
+meets_range_requirement is `Meets 2019 HB 2042 Electric Range Requirement`
+meets_sale_date_requirement is `Meets 2019 HB 2042 Sale Date Requirement`
+meets_sale_price_requirement is `Meets 2019 HB 2042 Sale Price/Value Requirement`
+model_year is `Model Year`
+new_used is `New or Used Vehicle`
+odometer is `Odometer Reading`
+odometer_desc is `Odometer Reading Description`
+zip_code is `Postal Code`
+primary_use is `Primary Use`
+sale_date is `Sale Date`
+sale_price is `Sale Price`
+trans_date is `Transaction Date`
+trans_type is `Transaction Type`
+trans_fee_paid is `Transportation Electrification Fee Paid`
+vin is `VIN (1-10)`
+}
